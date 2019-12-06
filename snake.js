@@ -76,7 +76,15 @@ function direction(event){
     }
 }
 
-
+//check collision function
+function collision(head,array){
+    for(let i=0;i<array.length;i++){
+        if(head.x==array[i].x && head.y == array[i].y){
+            return true;
+        }
+    }
+    return false;
+}
 
 // draw everything to the canvas
 
@@ -107,6 +115,7 @@ function draw(){
     // if the snake eats the food
     if(snakeX == food.x && snakeY == food.y){
         score++;
+        eat.play();
        
         food = {
             x : Math.floor(Math.random()*17+1) * box,
@@ -125,7 +134,11 @@ function draw(){
         y : snakeY
     }
     
-   
+   //game over
+   if (snakeX < box || snakeX>17*box  || snakeY< 3*box || snakeY>17*box || collision(newHead,snake) ){
+       clearInterval(game);
+       dead.play();
+   }
     
     snake.unshift(newHead);
     
